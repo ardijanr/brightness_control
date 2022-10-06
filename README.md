@@ -5,13 +5,14 @@ Sets the same brightness on all connected monitors
 
 requires xrandr
 
-How to use: 
+
+#### How to use: 
 
 compile release and place the binary file in /usr/bin/
 
 
 
-Example:
+#### Examples:
 
 Increase by 10%:
 ```
