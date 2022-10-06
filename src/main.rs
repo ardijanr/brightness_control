@@ -5,7 +5,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let amount = args[1]
         .parse::<f32>()
-        .expect("Error, need a positive or negative floating point number as second argument");
+        .expect("Error, need a positive or negative floating point number as argument");
 
     let mut brightness = get_brightness() + amount;
 
