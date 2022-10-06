@@ -9,14 +9,16 @@ How to use:
 
 compile release and place the binary file in /usr/bin/
 
-example of use:
+
+
+Example:
 
 Increase by 10%:
 ```
 brightness_control 0.1
 ```
 
-Decrease by 0.1:
+Decrease by 10%:
 ```
 brightness_control -0.1
 ```
