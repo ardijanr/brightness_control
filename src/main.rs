@@ -16,7 +16,6 @@ fn main() {
     }
 
     for monitor in get_monitors() {
-        println!("{:?}", monitor);
         let _ = Command::new("xrandr")
             .arg("--output")
             .arg(monitor)
@@ -39,7 +38,6 @@ fn get_brightness() -> f32 {
         .filter(|l| l.starts_with("Brightness"))
         .collect::<Vec<&str>>();
 
-        print!("{:?}", brightness_lines);
 
     if brightness_lines[0].len() < 1 {
         println!("Error, could not parse xrandr output");
