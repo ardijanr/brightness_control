@@ -16,6 +16,7 @@ fn main() {
     }
 
     for monitor in get_monitors() {
+        println!("{:?}", monitor);
         let _ = Command::new("xrandr")
             .arg("--output")
             .arg(monitor)
@@ -32,18 +33,20 @@ fn get_brightness() -> f32 {
     let stdout = String::from_utf8(cmd.output().expect("Error, missing xrandr").stdout)
         .expect("Could not get verbose output from xrandr");
 
-    let brightness_line: String = stdout
+    let brightness_lines = stdout
         .split("\n")
         .map(|l| l.trim())
         .filter(|l| l.starts_with("Brightness"))
-        .collect();
+        .collect::<Vec<&str>>();
 
-    if brightness_line.len() < 1 {
+        print!("{:?}", brightness_lines);
+
+    if brightness_lines[0].len() < 1 {
         println!("Error, could not parse xrandr output");
         exit(1);
     }
 
-    brightness_line.split(" ").collect::<Vec<&str>>()[1]
+    brightness_lines[0].split(" ").collect::<Vec<&str>>()[1]
         .parse::<f32>()
         .expect("Error, could not parse brightness number")
 }
