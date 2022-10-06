@@ -15,14 +15,17 @@ fn main() {
         brightness = 1.
     }
 
+
+    let mut args:Vec<String> = vec![];
+    println!("{:?}", get_monitors());
     for monitor in get_monitors() {
-        let _ = Command::new("xrandr")
-            .arg("--output")
-            .arg(monitor)
-            .arg("--brightness")
-            .arg(brightness.to_string())
-            .output();
+        args.push("--output".to_string());
+        args.push(monitor);
+        args.push("--brightness".to_string());
+        args.push(brightness.to_string());
     }
+
+    let _ = Command::new("xrandr").args(args).output();
 }
 
 fn get_brightness() -> f32 {
@@ -38,7 +41,6 @@ fn get_brightness() -> f32 {
         .filter(|l| l.starts_with("Brightness"))
         .collect::<Vec<&str>>();
 
-
     if brightness_lines[0].len() < 1 {
         println!("Error, could not parse xrandr output");
         exit(1);
@@ -52,6 +54,7 @@ fn get_brightness() -> f32 {
 fn get_monitors() -> Vec<String> {
     let output = String::from_utf8(
         Command::new("xrandr")
+            .arg("--listactivemonitors")
             .output()
             .unwrap() // missing xrandr is checked earlier
             .stdout,
@@ -60,16 +63,8 @@ fn get_monitors() -> Vec<String> {
 
     output
         .split("\n")
-        .map(|l| l.trim().split(" ").collect::<Vec<&str>>())
-        .collect::<Vec<Vec<&str>>>()
-        .iter()
-        .filter(|x| {
-            if x.len() < 2 {
-                return false;
-            } else {
-                x[1] == "connected"
-            }
-        })
-        .map(|x| x[0].to_string())
+        .filter(|x| !x.starts_with("Monitors"))
+        .map(|l| l.trim().split(" ").last().unwrap().to_string())
+        .filter(|x| !x.is_empty())
         .collect::<Vec<String>>()
 }
