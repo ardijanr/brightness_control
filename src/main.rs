@@ -29,7 +29,7 @@ fn get_brightness() -> f32 {
     let mut cmd = Command::new("xrandr");
     cmd.arg("--verbose");
 
-    let stdout = String::from_utf8(cmd.output().unwrap().stdout)
+    let stdout = String::from_utf8(cmd.output().expect("Error, missing xrandr").stdout)
         .expect("Could not get verbose output from xrandr");
 
     let brightness_line: String = stdout
@@ -52,7 +52,7 @@ fn get_monitors() -> Vec<String> {
     let output = String::from_utf8(
         Command::new("xrandr")
             .output()
-            .expect("Error, missing xrandr")
+            .unwrap() // missing xrandr is checked earlier
             .stdout,
     )
     .expect("Could not capture stdout");
